@@ -14,11 +14,11 @@ module uniport::uniport20bridge {
 
     struct UNIPORT20BRIDGE has drop {}
 
-    struct BridgeAdminCap has key, store {
+    struct BridgeAdminCap has key {
         id: UID,
     }
 
-    struct MultiSigAdminCap has key, store {
+    struct MultiSigAdminCap has key {
         id: UID,
     }
 
@@ -108,8 +108,8 @@ module uniport::uniport20bridge {
             used: table::new<String, bool>(ctx),
             symbolContracts: table::new<String, String>(ctx),
         });
-        transfer::public_transfer(BridgeAdminCap { id: object::new(ctx) }, tx_context::sender(ctx));
-        transfer::public_transfer(MultiSigAdminCap { id: object::new(ctx) }, tx_context::sender(ctx));
+        transfer::transfer(BridgeAdminCap { id: object::new(ctx) }, tx_context::sender(ctx));
+        transfer::transfer(MultiSigAdminCap { id: object::new(ctx) }, tx_context::sender(ctx));
     }
 
     public fun type_of<T>(): String {
@@ -241,11 +241,11 @@ module uniport::uniport20bridge {
     }
 
     public entry fun transfer(cap: BridgeAdminCap, recipient: address) {
-        transfer::public_transfer(cap, recipient)
+        transfer::transfer(cap, recipient)
     }
 
     public entry fun transfer_msign(cap: MultiSigAdminCap, recipient: address) {
-        transfer::public_transfer(cap, recipient)
+        transfer::transfer(cap, recipient)
     }
 
     #[test_only]
